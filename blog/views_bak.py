@@ -3,8 +3,6 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from django.utils import timezone
-from django.views import generic
-
 from blog.models import Choice, Question
 
 # Create your views here.
@@ -30,18 +28,13 @@ from blog.models import Person
 #     # output = ','.join([q.question_text for q in latest_quest_list])
 #     return HttpResponse(template.render(context, request))
 
-# def index(request):
-#     latest_question_list = Question.objects.order_by('-pub_date')[:20]
-#     context = {'latest_question_list':latest_question_list}
-#     return render(request,'blog/index.html',context)
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:20]
+    context = {'latest_question_list':latest_question_list}
+    return render(request,'blog/index.html',context)
 
-class IndexView(generic.ListView):
-    template_name = 'blog/index.html'
-    context_object_name = 'latest_question_list'
 
-    def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.order_by('-pub_date')[:20]
+
 # def detail(request, question_id):
 #     try:
 #         question = Question.objects.get(pk = question_id)
@@ -50,27 +43,18 @@ class IndexView(generic.ListView):
 #
 #     return render(request, 'blog/detail.html', {'question': question})
 
-# def detail(request , question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     return render(request, 'blog/detail.html', {'question': question})
-class DetailView(generic.DetailView):
-    model = Question
-    template_name = 'blog/detail.html'
+def detail(request , question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'blog/detail.html', {'question': question})
+
 # def detail(request, question_id):
 #     question = get_object_or_404(Question, pk=question_id)
 #     return render(request, 'blog/detail.html', {'question': question})
 
 
-# def results(request,question_id):
-#     question = get_object_or_404(Question,pk=question_id)
-#     return render(request,'blog/results.html',{'question':question})
-
-
-class ResultView(generic.DetailView):
-    model = Question
-    template_name = 'blog/results.html'
-
-
+def results(request,question_id):
+    question = get_object_or_404(Question,pk=question_id)
+    return render(request,'blog/results.html',{'question':question})
 # def vote(request,question_id):
 #     question=get_object_or_404(Question,pk=question_id)
 #     try:
